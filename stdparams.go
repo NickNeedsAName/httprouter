@@ -20,17 +20,6 @@ func (r *Router) Handler(method, path string, handler http.Handler) {
 	)
 }
 
-func (r *Router) HandlerFunc(method, path string, handlerF http.HandlerFunc) {
-	r.Handle(method, path,
-		func(w http.ResponseWriter, req *http.Request, p Params) {
-			ctx := req.Context()
-			ctx = context.WithValue(ctx, contextParamsKey, p)
-			req = req.WithContext(ctx)
-			handlerF(w, req)
-		},
-	)
-}
-
 func ParamsFromContext(ctx context.Context) Params {
 	p, _ := ctx.Value(contextParamsKey).(Params)
 	return p
