@@ -11,12 +11,13 @@ var contextParamsKey = paramsKey{}
 
 func (r *Router) Handler(method, path string, handler http.Handler) {
 	r.Handle(method, path,
-		func(w http.ResponseWriter, req *http.Request, p Param) {
+		func(w http.ResponseWriter, req *http.Request, p Params) {
 			ctx := req.Context()
 			ctx = context.WithValue(ctx, contextParamsKey, p)
 			req = req.WithContext(ctx)
 			handler.ServeHTTP(w, req)
-		})
+		},
+	)
 }
 
 func ParamsFromContext(ctx context.Context) Params {
